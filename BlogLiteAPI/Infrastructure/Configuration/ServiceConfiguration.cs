@@ -1,6 +1,5 @@
 ﻿using BlogLiteAPI.DataAccess;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace BlogLiteAPI.Infrastructure.Configuration
 {
@@ -24,7 +23,7 @@ namespace BlogLiteAPI.Infrastructure.Configuration
             services.AddDbContext<AppDbContext>(
                 cfg =>
                 {
-                    cfg.UseNpgsql("Server=BlogLiteAPI;Port=5432;Database=BlogLite;User Id=postgres;Password=postgres;Include Error Detail=true");
+                    cfg.UseNpgsql("Database=BlogLite;Port=5432;Host=bloglitedb.c5kqu82aoms2.eu-central-1.rds.amazonaws.com;Username=postgres;Password=postgres123;Include Error Detail=true;");
                 });
 
         }

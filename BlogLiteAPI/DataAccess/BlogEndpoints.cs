@@ -16,8 +16,10 @@ namespace BlogLiteAPI.DataAccess
                 => await db.Blogs.FindAsync(id))
                 .Produces<Blog>(StatusCodes.Status200OK);
 
-            app.MapPost("/blogs", async (AppDbContext db, Blog blog) =>
+            app.MapPost("/blogs", async (AppDbContext db, BlogCreateModel blogCreateModel) =>
             {
+                var blog = blogCreateModel.AsBlogObject("testUrl");
+
                 await db.Blogs.AddAsync(blog);
                 await db.SaveChangesAsync();
                 return Results.Created($"/blogs/{blog.Id}", blog);
