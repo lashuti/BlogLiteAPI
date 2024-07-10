@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BlogLiteAPI.Infrastructure.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Reflection.Metadata;
 
@@ -16,14 +18,23 @@ namespace BlogLiteAPI.DataAccess
                 => await db.Blogs.FindAsync(id))
                 .Produces<Blog>(StatusCodes.Status200OK);
 
-            app.MapPost("/blogs", async (AppDbContext db, BlogCreateModel blogCreateModel) =>
+            app.MapPost("/blogs", async (
+                AppDbContext db, 
+                IS3ImageService s3ImageService, 
+                IFormFile headerImage, 
+                [FromForm] string title, 
+                [FromForm] string content) =>
             {
-                var blog = blogCreateModel.AsBlogObject("testUrl");
+                var imageName = DateTime.Now.ToString("yyyyMMddHHmmss") + '-' + headerImage.FileName;
+
+                var s3Response = s3ImageService.UploadImageAsync(imageName, headerImage);
+
+                var blog = new Blog { Title = title, Content = content, HeaderImageUrl = "test", ImageName = imageName };
 
                 await db.Blogs.AddAsync(blog);
                 await db.SaveChangesAsync();
                 return Results.Created($"/blogs/{blog.Id}", blog);
-            }).Produces<Blog>(StatusCodes.Status201Created);
+            }).Produces<Blog>(StatusCodes.Status201Created).DisableAntiforgery();
 
             #region
 

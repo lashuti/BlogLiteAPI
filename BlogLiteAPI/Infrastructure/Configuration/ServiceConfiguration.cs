@@ -1,4 +1,6 @@
-﻿using BlogLiteAPI.DataAccess;
+﻿using Amazon.S3;
+using BlogLiteAPI.DataAccess;
+using BlogLiteAPI.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace BlogLiteAPI.Infrastructure.Configuration
@@ -15,7 +17,8 @@ namespace BlogLiteAPI.Infrastructure.Configuration
 
         public static void AddAWS(IServiceCollection services)
         {
-
+            services.AddSingleton<IAmazonS3, AmazonS3Client>();
+            services.AddSingleton<IS3ImageService, S3ImageService>();
         }
 
         public static void AddDbContext(IServiceCollection services)
