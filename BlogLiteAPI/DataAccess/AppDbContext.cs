@@ -10,7 +10,7 @@ namespace BlogLiteAPI.DataAccess
         {
             modelBuilder.Entity<Blog>()
                 .Property(b => b.CreatedAt)
-                .HasDefaultValueSql("getdate()");
+                .HasDefaultValueSql("CURRENT_DATE");
         }
     }
 }

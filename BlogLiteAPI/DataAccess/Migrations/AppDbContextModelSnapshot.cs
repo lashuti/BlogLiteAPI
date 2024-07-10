@@ -37,7 +37,7 @@ namespace BlogLiteAPI.DataAccess.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("getdate()");
+                        .HasDefaultValueSql("CURRENT_DATE");
 
                     b.Property<string>("HeaderImageUrl")
                         .IsRequired()

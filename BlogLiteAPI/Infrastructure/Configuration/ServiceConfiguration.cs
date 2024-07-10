@@ -23,7 +23,7 @@ namespace BlogLiteAPI.Infrastructure.Configuration
             services.AddDbContext<AppDbContext>(
                 cfg =>
                 {
-                    cfg.UseNpgsql("Database=BlogLite;Port=5432;Host=bloglitedb.c5kqu82aoms2.eu-central-1.rds.amazonaws.com;Username=postgres;Password=postgres123;Include Error Detail=true;");
+                    cfg.UseNpgsql("Database=BlogLiteDB;Port=5432;Host=bloglite.c5kqu82aoms2.eu-central-1.rds.amazonaws.com;Username=postgres;Password=postgres;");
                 });
 
         }

@@ -21,7 +21,7 @@ namespace BlogLiteAPI.DataAccess.Migrations
                     Title = table.Column<string>(type: "text", nullable: false),
                     HeaderImageUrl = table.Column<string>(type: "text", nullable: false),
                     Content = table.Column<string>(type: "text", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "getdate()")
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_DATE")
                 },
                 constraints: table =>
                 {
