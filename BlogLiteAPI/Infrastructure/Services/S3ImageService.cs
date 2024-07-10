@@ -7,7 +7,7 @@ namespace BlogLiteAPI.Infrastructure.Services
     {
         private readonly IAmazonS3 _s3 = s3;
         private readonly string directory = "blogs";
-        private readonly string _bucketName = "TODO";
+        private readonly string _bucketName = "bloglitebucket";
 
         public async Task<PutObjectResponse> UploadImageAsync(string imageKey, IFormFile file)
         {

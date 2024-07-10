@@ -29,7 +29,7 @@ namespace BlogLiteAPI.DataAccess
 
                 var s3Response = s3ImageService.UploadImageAsync(imageName, headerImage);
 
-                var blog = new Blog { Title = title, Content = content, HeaderImageUrl = "test", ImageName = imageName };
+                var blog = new Blog { Title = title, Content = content, ImageName = imageName };
 
                 await db.Blogs.AddAsync(blog);
                 await db.SaveChangesAsync();
