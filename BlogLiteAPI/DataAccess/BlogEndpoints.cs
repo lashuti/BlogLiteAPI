@@ -29,10 +29,11 @@ namespace BlogLiteAPI.DataAccess
 
                 var s3Response = s3ImageService.UploadImageAsync(imageName, headerImage);
 
-                var blog = new Blog { Title = title, Content = content, ImageName = imageName };
+                var blog = new Blog { Title = title, Content = content, ImageName = imageName, CreatedAt = DateTime.Now };
 
                 await db.Blogs.AddAsync(blog);
                 await db.SaveChangesAsync();
+
                 return Results.Created($"/blogs/{blog.Id}", blog);
             }).Produces<Blog>(StatusCodes.Status201Created).DisableAntiforgery();
 
