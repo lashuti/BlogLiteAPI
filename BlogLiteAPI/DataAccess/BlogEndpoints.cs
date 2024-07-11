@@ -20,19 +20,22 @@ namespace BlogLiteAPI.DataAccess
 
             app.MapPost("/blogs", async (
                 AppDbContext db, 
-                IS3ImageService s3ImageService, 
+                IS3ImageService s3ImageService,
+                ISqsPublisherService sqsPublisherService,
                 IFormFile headerImage, 
                 [FromForm] string title, 
                 [FromForm] string content) =>
             {
                 var imageName = DateTime.Now.ToString("yyyyMMddHHmmss") + '-' + headerImage.FileName;
 
-                var s3Response = s3ImageService.UploadImageAsync(imageName, headerImage);
+                var s3Response = await s3ImageService.UploadImageAsync(imageName, headerImage);
 
                 var blog = new Blog { Title = title, Content = content, ImageName = imageName, CreatedAt = DateTime.Now };
 
                 await db.Blogs.AddAsync(blog);
                 await db.SaveChangesAsync();
+
+                await sqsPublisherService.PublishAsync<Blog>(blog);
 
                 return Results.Created($"/blogs/{blog.Id}", blog);
             }).Produces<Blog>(StatusCodes.Status201Created).DisableAntiforgery();
