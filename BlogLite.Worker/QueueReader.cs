@@ -16,6 +16,8 @@ namespace BlogLite.Worker
 
                 if (message != null)
                 {
+                    if (message.Body.Contains("Exception")) continue;
+
                     //process
                     //send to mail and sms
 
