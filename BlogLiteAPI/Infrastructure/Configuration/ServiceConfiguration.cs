@@ -19,7 +19,7 @@ namespace BlogLiteAPI.Infrastructure.Configuration
         {
             services.AddSingleton<IAmazonS3, AmazonS3Client>();
             services.AddSingleton<IS3ImageService, S3ImageService>();
-            services.AddSingleton<ISqsPublisherService, SqsPublisherService>();
+            services.AddSingleton<ISqsService, SqsService>();
         }
 
         public static void AddDbContext(IServiceCollection services)

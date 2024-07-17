@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Reflection.Metadata;
+using System.Threading;
 
 namespace BlogLiteAPI.DataAccess
 {
@@ -21,23 +22,24 @@ namespace BlogLiteAPI.DataAccess
             app.MapPost("/blogs", async (
                 AppDbContext db, 
                 IS3ImageService s3ImageService,
-                ISqsPublisherService sqsPublisherService,
+                ISqsService sqsPublisherService,
+                CancellationToken cancellationToken,
                 IFormFile headerImage, 
                 [FromForm] string title, 
                 [FromForm] string content) =>
             {
                 var imageName = DateTime.Now.ToString("yyyyMMddHHmmss") + '-' + headerImage.FileName;
 
-                var s3Response = await s3ImageService.UploadImageAsync(imageName, headerImage);
+                var s3Response = await s3ImageService.UploadImageAsync(imageName, headerImage, cancellationToken);
 
                 if (s3Response.HttpStatusCode != System.Net.HttpStatusCode.OK) throw new Exception("Uploading image to S3 bucket failed");
 
                 var blog = new Blog { Title = title, Content = content, ImageName = imageName, CreatedAt = DateTime.Now };
 
-                await db.Blogs.AddAsync(blog);
-                await db.SaveChangesAsync();
+                await db.Blogs.AddAsync(blog, cancellationToken);
+                await db.SaveChangesAsync(cancellationToken);
 
-                await sqsPublisherService.PublishAsync(blog);
+                await sqsPublisherService.PublishAsync(blog, cancellationToken);
 
                 return Results.Created($"/blogs/{blog.Id}", blog);
             }).Produces<Blog>(StatusCodes.Status201Created).DisableAntiforgery();

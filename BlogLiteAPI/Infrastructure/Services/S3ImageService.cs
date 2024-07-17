@@ -9,7 +9,7 @@ namespace BlogLiteAPI.Infrastructure.Services
         private readonly string directory = "blogs";
         private readonly string _bucketName = "bloglitebucket";
 
-        public async Task<PutObjectResponse> UploadImageAsync(string imageKey, IFormFile file)
+        public async Task<PutObjectResponse> UploadImageAsync(string imageKey, IFormFile file, CancellationToken cancellationToken)
         {
             var putObjectRequest = new PutObjectRequest
             {
@@ -24,15 +24,15 @@ namespace BlogLiteAPI.Infrastructure.Services
                 }
             };
 
-            return await _s3.PutObjectAsync(putObjectRequest);
+            return await _s3.PutObjectAsync(putObjectRequest, cancellationToken);
         }
 
-        public Task<GetObjectResponse> GetImageAsync(string imageKey)
+        public Task<GetObjectResponse> GetImageAsync(string imageKey, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
-        public Task<DeleteObjectResponse> DeleteImageAsync(string imageKey)
+        public Task<DeleteObjectResponse> DeleteImageAsync(string imageKey, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }

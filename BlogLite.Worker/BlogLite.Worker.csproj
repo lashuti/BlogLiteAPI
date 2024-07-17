@@ -9,5 +9,10 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+    <PackageReference Include="AWSSDK.SQS" Version="3.7.301.31" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BlogLiteAPI\BlogLiteAPI.csproj" />
   </ItemGroup>
 </Project>
