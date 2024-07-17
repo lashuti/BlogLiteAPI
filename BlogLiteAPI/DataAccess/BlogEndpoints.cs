@@ -30,12 +30,14 @@ namespace BlogLiteAPI.DataAccess
 
                 var s3Response = await s3ImageService.UploadImageAsync(imageName, headerImage);
 
+                if (s3Response.HttpStatusCode != System.Net.HttpStatusCode.OK) throw new Exception("Uploading image to S3 bucket failed");
+
                 var blog = new Blog { Title = title, Content = content, ImageName = imageName, CreatedAt = DateTime.Now };
 
                 await db.Blogs.AddAsync(blog);
                 await db.SaveChangesAsync();
 
-                await sqsPublisherService.PublishAsync<Blog>(blog);
+                await sqsPublisherService.PublishAsync(blog);
 
                 return Results.Created($"/blogs/{blog.Id}", blog);
             }).Produces<Blog>(StatusCodes.Status201Created).DisableAntiforgery();

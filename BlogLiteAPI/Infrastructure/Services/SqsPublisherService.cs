@@ -9,7 +9,7 @@ namespace BlogLiteAPI;
 public class SqsPublisherService() : ISqsPublisherService
 {
     public IAmazonSQS _sqs = new AmazonSQSClient(RegionEndpoint.EUCentral1);
-    private readonly string queueName = "QUEUE NAME";
+    private readonly string queueName = "BlogLiteQueue";
     
     public async Task PublishAsync<T>(T message)
     {
